@@ -97,20 +97,17 @@ const BookType = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
-<<<<<<< HEAD
     genre: {type: GraphQLString},
     author: {
       type: AuthorType,
       resolve(parent, args) {
         console.log(parent);
         return _.find(authors, {id: parent.authorId});
-=======
     age: {type: GraphQLInt},
     books: {
       type: new GraphQLList(BookType),
       resolve(parent, args) {
         return _.filter(books, {authorId: parent.id});
->>>>>>> 8b69ebcf264981fdd4d66ac72b92a28619de0a11
       },
     },
   }),
