@@ -6,6 +6,7 @@ const _ = require('lodash');
 const {
   GraphQLID,
   GraphQLInt,
+  GraphQLList,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
@@ -31,12 +32,43 @@ var books = [
     id: '3',
     authorId: '3',
   },
+  {
+    name: 'The Hero of Ages',
+    genre: 'Sci-Fi',
+    id: '4',
+    authorId: '1',
+  },
+  {
+    name: 'The Colour of Magic',
+    genre: 'Sci-Fi',
+    id: '5',
+    authorId: '2',
+  },
+  {
+    name: 'The Light Fantastic',
+    genre: 'Sci-Fi',
+    id: '6',
+    authorId: '3',
+  },
 ];
 
+// dummy data
 var authors = [
-  {name: 'Patrick Rothfuss', age: 44, id: '1'},
-  {name: 'Brandon Sanderson', age: 42, id: '2'},
-  {name: 'Terry Pratchett', age: 24, id: '3'},
+  {
+    name: 'Patrick Rothfuss',
+    age: 44,
+    id: '1',
+  },
+  {
+    name: 'Brandon Sanderson',
+    age: 42,
+    id: '2',
+  },
+  {
+    name: 'Terry Pratchett',
+    age: 24,
+    id: '3',
+  },
 ];
 
 /**
@@ -66,13 +98,34 @@ const BookType = new GraphQLObjectType({
 const AuthorType = new GraphQLObjectType({
   name: 'Author',
   fields: () => ({
-    // string of random numbers
-    // must be GraphQLString so that GraphQL understands it
     id: {type: GraphQLID},
     name: {type: GraphQLString},
     age: {type: GraphQLInt},
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return _.filter(books, {authorId: parent.id});
+      },
+    },
   }),
 });
+
+// const AuthorType = new GraphQLObjectType({
+//   name: 'Author',
+//   fields: () => ({
+//     // string of random numbers
+//     // must be GraphQLString so that GraphQL understands it
+//     id: {type: GraphQLID},
+//     name: {type: GraphQLString},
+//     age: {type: GraphQLInt},
+//     books: {
+//       type: new GraphQLList(BookType),
+//       resolve(parent, args) {
+//         return _.filter(books, {authorId: parent.id});
+//       },
+//     },
+//   }),
+// });
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
