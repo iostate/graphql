@@ -95,20 +95,43 @@ const AuthorType = new GraphQLObjectType({
 const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
-    // string of random numbers
-    // must be GraphQLString so that GraphQL understands it
     id: {type: GraphQLID},
     name: {type: GraphQLString},
+<<<<<<< HEAD
     genre: {type: GraphQLString},
     author: {
       type: AuthorType,
       resolve(parent, args) {
         console.log(parent);
         return _.find(authors, {id: parent.authorId});
+=======
+    age: {type: GraphQLInt},
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return _.filter(books, {authorId: parent.id});
+>>>>>>> 8b69ebcf264981fdd4d66ac72b92a28619de0a11
       },
     },
   }),
 });
+
+// const AuthorType = new GraphQLObjectType({
+//   name: 'Author',
+//   fields: () => ({
+//     // string of random numbers
+//     // must be GraphQLString so that GraphQL understands it
+//     id: {type: GraphQLID},
+//     name: {type: GraphQLString},
+//     age: {type: GraphQLInt},
+//     books: {
+//       type: new GraphQLList(BookType),
+//       resolve(parent, args) {
+//         return _.filter(books, {authorId: parent.id});
+//       },
+//     },
+//   }),
+// });
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
