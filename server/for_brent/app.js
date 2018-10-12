@@ -1,3 +1,5 @@
+// the file corresponds to https://github.com/iostate/graphql/blob/master/server/app.js
+
 const express = require('express');
 // convention is graphqlHTTP
 const graphqlHTTP = require('express-graphql');
