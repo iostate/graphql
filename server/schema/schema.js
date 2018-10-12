@@ -36,13 +36,13 @@ var books = [
     name: 'The Hero of Ages',
     genre: 'Sci-Fi',
     id: '4',
-    authorId: '1',
+    authorId: '2',
   },
   {
     name: 'The Colour of Magic',
     genre: 'Sci-Fi',
     id: '5',
-    authorId: '2',
+    authorId: '3',
   },
   {
     name: 'The Light Fantastic',
@@ -76,6 +76,8 @@ var authors = [
  */
 const AuthorType = new GraphQLObjectType({
   name: 'Author',
+  // the anonymous function allows the fields to be
+  // called at a later time, and not upon loading
   fields: () => ({
     id: {type: GraphQLID},
     name: {type: GraphQLString},
@@ -90,7 +92,12 @@ const AuthorType = new GraphQLObjectType({
 });
 
 /**
- * Takes in object which describes what this book is about.
+ * Describes a Book GraphQLObjectType.
+ *
+ * GraphQLObjectType's must be:
+ * 1. Named.
+ * 2. Given name pair values;
+ * 3.
  */
 const BookType = new GraphQLObjectType({
   name: 'Book',
@@ -101,13 +108,8 @@ const BookType = new GraphQLObjectType({
     author: {
       type: AuthorType,
       resolve(parent, args) {
-        console.log(parent);
+        // console.log(parent);
         return _.find(authors, {id: parent.authorId});
-    age: {type: GraphQLInt},
-    books: {
-      type: new GraphQLList(BookType),
-      resolve(parent, args) {
-        return _.filter(books, {authorId: parent.id});
       },
     },
   }),
@@ -138,7 +140,14 @@ const RootQuery = new GraphQLObjectType({
      * we need to know name of this because of the query structure
      * mutation {
      *    book{
-     *      properties here
+     *      id
+     *      name
+     *      genre
+     *      author {
+     *        id
+     *        name
+     *        age
+     *      }
      *    }
      * }
      */
@@ -154,15 +163,30 @@ const RootQuery = new GraphQLObjectType({
       */
       resolve(parent, args) {
         // code to get data from db / other source
-        console.log(typeof args.id);
+        // console.log(typeof args.id);
         return _.find(books, {id: args.id});
       },
     },
+    // returns a single author
     author: {
       type: AuthorType,
       args: {id: {type: GraphQLID}},
       resolve(parent, args) {
         return _.find(authors, {id: args.id});
+      },
+    },
+    // returns all authors
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return books;
+      },
+    },
+    // returns all authors
+    authors: {
+      type: new GraphQLList(AuthorType),
+      resolve(parent, args) {
+        return authors;
       },
     },
   },
