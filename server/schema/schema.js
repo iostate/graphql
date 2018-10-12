@@ -58,23 +58,6 @@ const BookType = new GraphQLObjectType({
   }),
 });
 
-// const AuthorType = new GraphQLObjectType({
-//   name: 'Author',
-//   fields: () => ({
-//     // string of random numbers
-//     // must be GraphQLString so that GraphQL understands it
-//     id: {type: GraphQLID},
-//     name: {type: GraphQLString},
-//     age: {type: GraphQLInt},
-//     books: {
-//       type: new GraphQLList(BookType),
-//       resolve(parent, args) {
-//         return _.filter(books, {authorId: parent.id});
-//       },
-//     },
-//   }),
-// });
-
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
@@ -135,4 +118,31 @@ const RootQuery = new GraphQLObjectType({
   },
 });
 
-module.exports = new GraphQLSchema({query: RootQuery});
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: {type: GraphQLString},
+        age: {type: GraphQLInt},
+      },
+      resolve(parent, args) {
+        // create new Author with fields on args
+        // Author is brought in from '../models/author.js';
+        let author = new Author({
+          name: args.name,
+          age: args.age,
+        });
+        // by returning the saving of author, we get back
+        // author properties
+        return author.save(); // save to database
+      },
+    },
+  },
+});
+
+module.exports = new GraphQLSchema({
+  query: RootQuery,
+  mutation: Mutation,
+});
