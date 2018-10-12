@@ -1,0 +1,17 @@
+{
+  "name": "graphql-playlist",
+  "version": "1.0.0",
+  "description": "I got this tutorial from here https://www.youtube.com/watch?v=ed8SzALpx1Q&t=1302s",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-graphql": "^0.6.12",
+    "graphql": "^14.0.2",
+    "lodash": "^4.17.11"
+  }
+}
