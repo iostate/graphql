@@ -176,17 +176,17 @@ const RootQuery = new GraphQLObjectType({
       },
     },
     // returns all authors
-    books: {
-      type: new GraphQLList(BookType),
-      resolve(parent, args) {
-        return books;
-      },
-    },
-    // returns all authors
     authors: {
       type: new GraphQLList(AuthorType),
       resolve(parent, args) {
         return authors;
+      },
+    },
+    // returns all authors
+    books: {
+      type: new GraphQLList(BookType),
+      resolve(parent, args) {
+        return books;
       },
     },
   },
